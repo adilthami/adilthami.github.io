@@ -1,0 +1,192 @@
+---
+import MetaPage from "@/components/MetaPage.astro"
+import Layout from "@/layouts/Layout.astro"
+
+
+const experience = [
+  {
+    period: "2025 — present",
+    title: "Project Engineer, ULiège",
+    description:
+      "Modelling of nature-based solutions for water management (MODREC project).",
+  },
+  {
+    period: "2022 — 2025",
+    title: "Research Assistant, UCLouvain",
+    description:
+      "Inverse modelling of Critical Zone hydrological processes in peatlands (LandSense project).",
+  },
+]
+
+const education = [
+  {
+    period: "2020 — 2022",
+    title: "MSc in Environmental Bioengineering",
+    institution: "UCLouvain",
+  },
+    {
+        period: "2017 — 2020",
+        title: "BSc in Bioengineering",
+        institution: "UCLouvain",
+    },
+]
+
+const publications: { year: string; title: string; venue: string; href?: string }[] =
+  [
+    // { year: "2026", title: "Paper title", venue: "Journal name", href: "https://..." },
+  ]
+
+const awards: { year: string; title: string }[] = [
+  // { year: "2025", title: "Award name" },
+]
+---
+
+<Layout>
+  <MetaPage slot="head" title="About me" />
+
+  <about-page>
+      <section>
+      <h2>Experience</h2>
+      <ul>
+        {experience.map((item) => (
+          <li>
+            <entry-header>
+              <span class="title">{item.title}</span>
+              <span class="period">{item.period}</span>
+            </entry-header>
+            <p>{item.description}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <hr />
+
+    <section>
+      <h2>Education</h2>
+      <ul>
+        {education.map((item) => (
+          <li>
+            <entry-header>
+              <span class="title">{item.title}</span>
+              <span class="period">{item.period}</span>
+            </entry-header>
+            <p>{item.institution}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {publications.length > 0 && (
+      <section>
+        <h2>Publications</h2>
+        <ul>
+          {publications.map((item) => (
+            <li>
+              <entry-header>
+                <span class="title">
+                  {item.href ? (
+                    <a href={item.href} target="_blank" rel="noopener noreferrer">
+                      {item.title}
+                    </a>
+                  ) : (
+                    item.title
+                  )}
+                </span>
+                <span class="period">{item.year}</span>
+              </entry-header>
+              <p>{item.venue}</p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    {awards.length > 0 && (
+      <section>
+        <h2>Awards</h2>
+        <ul>
+          {awards.map((item) => (
+            <li>
+              <entry-header>
+                <span class="title">{item.title}</span>
+                <span class="period">{item.year}</span>
+              </entry-header>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </about-page>
+</Layout>
+
+<style>
+  about-page {
+    display: block;
+    font-size: var(--step-0);
+    color: var(--muted-foreground);
+
+    h1 {
+      font-size: var(--step-2);
+      line-height: calc(var(--leading-offset) + 1em);
+      font-weight: var(--font-weight-medium);
+      color: var(--foreground);
+      margin-block-end: var(--space-2xs);
+    }
+
+    p.intro {
+      max-inline-size: 60ch;
+    }
+
+    hr {
+      margin-block: var(--space-m);
+      border-block-start: 2px solid var(--border);
+    }
+
+    section {
+      + section {
+        margin-block-start: var(--space-l);
+      }
+
+      h2 {
+        font-size: var(--step-1);
+        line-height: calc(var(--leading-offset) + 1em);
+        font-weight: var(--font-weight-medium);
+        color: var(--foreground);
+        margin-block-end: var(--space-xs);
+      }
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-s);
+        list-style: none;
+      }
+
+      li {
+        entry-header {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          justify-content: space-between;
+          gap: var(--space-3xs);
+
+          .title {
+            font-weight: var(--font-weight-medium);
+            color: var(--foreground);
+          }
+
+          .period {
+            font-size: var(--step--1);
+            color: var(--muted-foreground);
+            white-space: nowrap;
+          }
+        }
+
+        p {
+          margin-block-start: var(--space-3xs);
+        }
+      }
+    }
+  }
+</style>
