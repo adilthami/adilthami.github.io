@@ -1,55 +1,60 @@
 ---
 import MetaPage from "@/components/MetaPage.astro"
 import Layout from "@/layouts/Layout.astro"
+
+import BlogCard from "@/components/BlogCard.astro"
+import ProjectCard from "@/components/ProjectCard.astro"
+
+import { getRecentPosts } from "@/lib/content"
+import { getRecentProjects } from "@/lib/content"
+
+
+const latestPosts = await getRecentPosts(3)
+const latestProjects = await getRecentProjects(3)
 ---
 
 <Layout>
   <MetaPage slot="head" />
   <dictionary-entry>
-    <h1>er·u·dite</h1>
+    <h1>Adil·Thami</h1>
     <etymology-span>
-      <ipa-span>/ˈer(y)əˌdīt/</ipa-span>
-      adj. [L. <i>ēruditus</i>, instructed, pp. of <i>ērudīre</i> to instruct,
-      polish, lit. to free from roughness, f. ē- out + <i>rudis</i> rough,
-      untrained]
+      <ipa-span>/əˈdiːl ˈtɑːmi/</ipa-span>
+      n.
     </etymology-span>
     <ol>
       <li>
-        having or showing deep, wide-ranging knowledge acquired through study;
-        learned (<i>an erudite scholar</i>).
+        Environmental bioengineer specialized in environmental technologies. Driven by the desire to understand complex natural systems through modelling, data-driven approaches, and observations.
       </li>
       <li>
-        (of writing, speech, or argument) reflecting such knowledge; scholarly (<i
-          >an erudite footnote</i
-        >).
+        Project engineer at ULiège, working on the modelling of nature based solutions for water management.
       </li>
     </ol>
-    <hr>
+    <!-- <hr>
     <prose-content>
       <p>
-        astro-erudite is
-        <a href="https://enscribe.dev" target="_blank" rel="noopener noreferrer"
-          >enscribe</a
-        >'s opinionated, unstyled static blogging template built with
-        <a href="https://astro.build" target="_blank" rel="noopener noreferrer"
-          >Astro</a
-        >
-        and native CSS. astro-erudite uses no UI or CSS framework and contains
-        minimal dependencies.
+        blablabla
       </p>
-      <p>
-        To use this template, check out the
-        <a
-          href="https://github.com/jktrn/astro-erudite"
-          target="_blank"
-          rel="noopener noreferrer"
-          >GitHub</a
-        >
-        repository. To learn more about why this template exists, read this blog
-        post: <a href="/blog/introducing-v2">Introducing astro-erudite v2</a>.
-      </p>
-    </prose-content>
+    </prose-content> -->
+    <hr>
   </dictionary-entry>
+
+   <section>
+    <h2>Latest posts</h2>
+    <ul>
+      {latestPosts.map((post) => <BlogCard post={post} />)}
+    </ul>
+    <hr>
+  </section>
+
+  
+  <section>
+    <h2>Recent projects</h2>
+    <ul>
+      {latestProjects.map((project) => <ProjectCard project={project} />)}
+    </ul>
+  </section>
+
+
 </Layout>
 
 <style>
@@ -57,15 +62,12 @@ import Layout from "@/layouts/Layout.astro"
     display: block;
     font-size: var(--step-0);
     color: var(--muted-foreground);
-
     @media (width >= 64rem) {
       margin-block-start: -0.2em;
     }
-
     ipa-span {
       opacity: 0.6;
     }
-
     h1 {
       font-size: var(--step-2);
       line-height: calc(var(--leading-offset) + 1em);
@@ -73,15 +75,12 @@ import Layout from "@/layouts/Layout.astro"
       color: var(--foreground);
       margin-block-end: var(--space-2xs);
     }
-
     ol {
       margin-block-start: var(--space-xs);
       list-style: none;
-
       li {
         padding-inline-start: 1em;
         text-indent: -1em;
-
         &::before {
           content: counter(list-item);
           display: inline-block;
@@ -89,20 +88,38 @@ import Layout from "@/layouts/Layout.astro"
           text-indent: 0;
           font-weight: var(--font-weight-medium);
         }
-
         + li {
           margin-block-start: var(--space-3xs);
         }
       }
     }
-
     hr {
       margin-block: var(--space-m);
       border-block-start: 2px solid var(--border);
     }
-
     prose-content {
       margin-block-start: var(--space-xs);
+    }
+  }
+
+  section {
+    margin-block-start: var(--space-m);
+    h2 {
+      font-size: var(--step-2);
+      line-height: calc(var(--leading-offset) + 1em);
+      font-weight: var(--font-weight-medium);
+      color: var(--foreground);
+      margin-block-end: var(--space-2xs);
+    }
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-s);
+      list-style: none;
+    }
+    hr {
+      margin-block: var(--space-m);
+      border-block-start: 2px solid var(--border);
     }
   }
 </style>

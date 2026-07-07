@@ -26,6 +26,28 @@ export async function getSubposts(): Promise<
   return Map.groupBy(posts, (post) => post.id.split("/")[0])
 }
 
+export async function getRecentPosts(
+  count: number,
+): Promise<CollectionEntry<"blog">[]> {
+  const posts = await getPosts()
+  return posts.slice(0, count)
+}
+
+export async function getProjects(): Promise<CollectionEntry<"projects">[]> {
+  const projects = await getCollection("projects")
+  return projects.sort(
+    (a, b) =>
+      (b.data.startDate?.getTime() ?? 0) - (a.data.startDate?.getTime() ?? 0),
+  )
+}
+
+export async function getRecentProjects(
+  count: number,
+): Promise<CollectionEntry<"projects">[]> {
+  const projects = await getProjects()
+  return projects.slice(0, count)
+}
+
 export async function getTags(): Promise<
   Map<string, CollectionEntry<"blog">[]>
 > {
