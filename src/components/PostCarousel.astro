@@ -1,0 +1,94 @@
+---
+import ArrowLeftIcon from "@/assets/icons/arrow-left.svg"
+import ArrowRightIcon from "@/assets/icons/arrow-right.svg"
+import BlogCard from "@/components/BlogCard.astro"
+import type { CollectionEntry } from "astro:content"
+type Props = { posts: CollectionEntry<"blog">[] }
+const { posts } = Astro.props
+---
+<post-carousel>
+  <ul>
+    {posts.map((post) => <BlogCard post={post} />)}
+  </ul>
+  <nav>
+    <button type="button" data-dir="prev" aria-label="Previous post">
+      <ArrowLeftIcon aria-hidden="true" />
+    </button>
+    <button type="button" data-dir="next" aria-label="Next post">
+      <ArrowRightIcon aria-hidden="true" />
+    </button>
+  </nav>
+</post-carousel>
+<style>
+  post-carousel {
+    display: block;
+    ul {
+      position: relative;
+      display: flex;
+      gap: var(--space-s);
+      overflow: hidden;
+      list-style: none;
+      scroll-snap-type: x mandatory;
+      :global(li) {
+        flex: 0 0 100%;
+        scroll-snap-align: start;
+      }
+    }
+    nav {
+      display: flex;
+      justify-content: flex-end;
+      gap: var(--space-2xs);
+      margin-block-start: var(--space-xs);
+      button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        inline-size: 2rem;
+        block-size: 2rem;
+        color: var(--muted-foreground);
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        background: none;
+        cursor: pointer;
+        svg {
+          inline-size: 1em;
+          block-size: 1em;
+        }
+        &:hover {
+          color: var(--foreground);
+          border-color: var(--foreground);
+        }
+        &:disabled {
+          opacity: 0.3;
+          cursor: default;
+        }
+      }
+    }
+  }
+</style>
+<script>
+  class PostCarousel extends HTMLElement {
+    connectedCallback() {
+      const list = this.querySelector("ul")!
+      const items = [...this.querySelectorAll("li")]
+      const prevBtn = this.querySelector<HTMLButtonElement>('[data-dir="prev"]')!
+      const nextBtn = this.querySelector<HTMLButtonElement>('[data-dir="next"]')!
+      let index = 0
+      const update = () => {
+        list.scrollTo({ left: items[index].offsetLeft, behavior: "smooth" })
+        prevBtn.disabled = index === 0
+        nextBtn.disabled = index === items.length - 1
+      }
+      prevBtn.addEventListener("click", () => {
+        index = Math.max(0, index - 1)
+        update()
+      })
+      nextBtn.addEventListener("click", () => {
+        index = Math.min(items.length - 1, index + 1)
+        update()
+      })
+      update()
+    }
+  }
+  customElements.define("post-carousel", PostCarousel)
+</script>

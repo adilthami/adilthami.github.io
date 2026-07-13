@@ -4,13 +4,15 @@ import Layout from "@/layouts/Layout.astro"
 
 import BlogCard from "@/components/BlogCard.astro"
 import ProjectCard from "@/components/ProjectCard.astro"
+import PostCarousel from "@/components/PostCarousel.astro"
+
 
 import { getRecentPosts } from "@/lib/content"
 import { getRecentProjects } from "@/lib/content"
 
 
 const latestPosts = await getRecentPosts(3)
-const latestProjects = await getRecentProjects(3)
+const latestProjects = await getRecentProjects(1)
 ---
 
 <Layout>
@@ -21,14 +23,11 @@ const latestProjects = await getRecentProjects(3)
       <ipa-span>/əˈdiːl ˈtɑːmi/</ipa-span>
       n.
     </etymology-span>
-    <ol>
+    <ul>
       <li>
-        Environmental bioengineer specialized in environmental technologies. Driven by the desire to understand complex natural systems through modelling, data-driven approaches, and observations.
+        Environmental bioengineer driven by understanding complex natural systems through modelling and observations.
       </li>
-      <li>
-        Project engineer at ULiège, working on the modelling of nature based solutions for water management.
-      </li>
-    </ol>
+    </ul>
     <!-- <hr>
     <prose-content>
       <p>
@@ -38,17 +37,27 @@ const latestProjects = await getRecentProjects(3)
     <hr>
   </dictionary-entry>
 
-   <section>
+   <!-- <section>
     <h2>Latest posts</h2>
     <ul>
       {latestPosts.map((post) => <BlogCard post={post} />)}
     </ul>
+    <a href="/blog" class="view-all">All posts →</a>
+    <hr>
+  </section> -->
+
+  <section>
+    <h2>Latest posts</h2>
+    <PostCarousel posts={latestPosts} />
+    <!-- on the right -->
+    <a href="/blog" class="view-all">All posts →</a> 
+    
     <hr>
   </section>
 
   
   <section>
-    <h2>Recent projects</h2>
+    <h2>Current project</h2>
     <ul>
       {latestProjects.map((project) => <ProjectCard project={project} />)}
     </ul>
@@ -94,7 +103,7 @@ const latestProjects = await getRecentProjects(3)
       }
     }
     hr {
-      margin-block: var(--space-m);
+      margin-block: var(--space-xs);
       border-block-start: 2px solid var(--border);
     }
     prose-content {
@@ -111,15 +120,25 @@ const latestProjects = await getRecentProjects(3)
       color: var(--foreground);
       margin-block-end: var(--space-2xs);
     }
-    ul {
+    > ul {
       display: flex;
       flex-direction: column;
       gap: var(--space-s);
       list-style: none;
     }
     hr {
-      margin-block: var(--space-m);
+      margin-block: var(--space-xs);
       border-block-start: 2px solid var(--border);
+    }
+    a.view-all {
+      display: block;
+      text-align: right;
+      margin-block-start: var(--space-xs);
+      font-size: var(--step--1);
+      color: var(--muted-foreground);
+      &:hover {
+        color: var(--foreground);
+      }
     }
   }
 </style>

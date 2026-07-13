@@ -26,7 +26,7 @@ const { name, description, link, tags, image, startDate, endDate } =
   <entry-info>
     <a href={link} target="_blank" rel="noopener noreferrer">{name}</a>
     <entry-meta>
-      {startDate && (
+      <!-- {startDate && (
           <project-dates>
             <time datetime={startDate.toISOString()}>
               {formatDate(startDate)}
@@ -40,7 +40,26 @@ const { name, description, link, tags, image, startDate, endDate } =
               "Present"
             )}
           </project-dates>
-        )}
+        )} -->
+      {startDate && (
+        <project-dates>
+          {endDate && endDate.getFullYear() === startDate.getFullYear() ? (
+            <time datetime={startDate.toISOString()}>{startDate.getFullYear()}</time>
+          ) : (
+            <>
+              <time datetime={startDate.toISOString()}>{startDate.getFullYear()}</time>
+              {" → "}
+              {endDate ? (
+                <time datetime={endDate.toISOString()}>{endDate.getFullYear()}</time>
+              ) : (
+                "Present"
+              )}
+            </>
+          )}
+        </project-dates>
+      )}  
+
+
       <project-link>
         <ExternalIcon aria-hidden="true" />
         {new URL(link).hostname}
